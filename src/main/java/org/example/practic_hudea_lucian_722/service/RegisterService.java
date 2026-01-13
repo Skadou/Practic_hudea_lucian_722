@@ -121,10 +121,35 @@ public class RegisterService {
 
         for (int i = 0; i < Math.min(5, events.size()); i++) {
             Map<String, Object> event = events.get(i);
-            int id = (int) event.get("id");
-            int points = (int) event.get("points");
-            int day = (int) event.get("day");
-            String eventType = (String) event.get("eventType");
+
+            Object idObj = event.get("id");
+            Object pointsObj = event.get("points");
+            Object dayObj = event.get("day");
+            Object eventTypeObj = event.get("eventType");
+
+            if (idObj == null || pointsObj == null || dayObj == null) {
+                System.out.println("Skipping malformed event at index " + i + " (missing id/points/day)");
+                continue;
+            }
+
+            int id;
+            int points;
+            int day;
+            try {
+                id = (idObj instanceof Number) ? ((Number) idObj).intValue() : Integer.parseInt(String.valueOf(idObj));
+                points = (pointsObj instanceof Number) ? ((Number) pointsObj).intValue() : Integer.parseInt(String.valueOf(pointsObj));
+                day = (dayObj instanceof Number) ? ((Number) dayObj).intValue() : Integer.parseInt(String.valueOf(dayObj));
+            } catch (NumberFormatException ex) {
+                System.out.println("Skipping event with non-numeric id/points/day at index " + i + ": " + ex.getMessage());
+                continue;
+            }
+
+            if (eventTypeObj == null) {
+                System.out.println("Event " + id + " -> rawPoints=" + points + " -> computedPoints=" + points + " (missing eventType)");
+                continue;
+            }
+
+            String eventType = String.valueOf(eventTypeObj).trim().toUpperCase();
 
             int computedPoints = 0;
             switch (eventType) {
@@ -142,6 +167,10 @@ public class RegisterService {
                     break;
                 case "SPONSORED":
                     computedPoints = points + 10;
+                    break;
+                default:
+                    System.out.println("Warning: unknown eventType '" + eventType + "' for event " + id + ", treating computedPoints = rawPoints");
+                    computedPoints = points;
                     break;
             }
 

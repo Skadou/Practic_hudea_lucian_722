@@ -32,6 +32,13 @@ public class PracticHudeaLucian722Application implements CommandLineRunner {
             System.out.println("0. Exit");
             String choice = scanner.nextLine();
 
+            // Make switch expression null-safe (scanner.nextLine() can be null in some environments)
+            if (choice == null) {
+                choice = "";
+            } else {
+                choice = choice.trim();
+            }
+
             switch (choice) {
                 case "1":
                     registerController.run(scanner);
