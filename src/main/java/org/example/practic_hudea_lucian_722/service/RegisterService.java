@@ -49,6 +49,19 @@ public class RegisterService {
         List<Register> tributes = mapper.readValue(new File("tributes.json"), new TypeReference<List<Register>>(){});
 
         System.out.println("Anzahl der Tribute: " + tributes.size());
+    }
 
+    //2) Filtren nach distrikt und statusLesen Sie von der Tastatur eine ganze Zahl D, die ein Distrikt repräsentiert. Geben Sie anschließend nur die Tribute aus, die gleichzeitig folgende Bedingungen erfüllen:
+    //● district == D
+    //● status == ALIVE
+    //Die Ausgabe erfolgt im selben Format wie in Aufgabe 1.
+
+    public void filterTributesByDistrictAndStatus(int district) {
+        System.out.println("Tribute aus Distrikt " + district + " mit Status ALIVE:");
+        for (Register r : registers) {
+            if (r.getDistrict() == district && r.getStatus().toString().equals("ALIVE")) {
+                System.out.println(r.getId() + " | " + r.getName() + " | " + "D" + r.getDistrict() + " | " + r.getStatus() + " | " + r.getSkillLevel());
+            }
+        }
     }
 }
