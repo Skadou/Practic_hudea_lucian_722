@@ -64,4 +64,22 @@ public class RegisterService {
             }
         }
     }
+
+    //3)Sortierung der Tribute
+    //Sortieren Sie die Liste der Tribute wie folgt:
+    //● absteigend nach skillLevel
+    //● bei gleichem skillLevel aufsteigend nach name
+    //Geben Sie die sortierte Liste auf der Konsole aus.
+
+    public void sortTributes() {
+        registers.sort((r1, r2) -> {
+            int skillComp = Integer.compare(r2.getSkillLevel(), r1.getSkillLevel());
+            return (skillComp != 0) ? skillComp : r1.getName().compareTo(r2.getName());
+        });
+
+        System.out.println("Sortierte Liste der Tribute:");
+        for (Register r : registers) {
+            System.out.println(r.getId() + " | " + r.getName() + " | " + "D" + r.getDistrict() + " | " + r.getStatus() + " | " + r.getSkillLevel());
+        }
+    }
 }
