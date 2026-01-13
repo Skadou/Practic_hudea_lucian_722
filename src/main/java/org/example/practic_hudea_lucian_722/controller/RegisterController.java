@@ -22,22 +22,27 @@ public class RegisterController {
             service.loadTributes("tributes.json");
 
             // b) numar evenimente
-            System.out.println("--- Number of Events ---");
+            System.out.println("--- 1)Number of Events ---");
             service.numberofEvents();
 
             // c) numar cadouri
-            System.out.println("--- Number of Gifts ---");
+            System.out.println("--- 2)Number of Gifts ---");
             service.numberofGifts();
 
             // d) numar tributi
-            System.out.println("--- Number of Tributes ---");
+            System.out.println("--- 3)Number of Tributes ---");
             service.numberofTributes();
 
             //2
-            System.out.println("\n--- Filter Tributes by District and Status ---");
+            System.out.println("\n--- 4)Filter Tributes by District and Status ---");
             System.out.println("Enter district number (1-12): ");
             int choice = scanner.nextInt();
             service.filterTributesByDistrictAndStatus(choice);
+
+            //5 calculateEventPoints
+            System.out.println("\n--- 5)Calculate Event Points for Each Tribute ---");
+            service.calculateEventPoints();
+
 
             //3
             System.out.println("\n--- Sorted Tributes ---");
@@ -46,7 +51,6 @@ public class RegisterController {
             //4
             System.out.println("\n--- Writing Sorted Tributes to File ---");
             service.writeSortedTributesToFile();
-
 
 
         } catch (Exception e) {

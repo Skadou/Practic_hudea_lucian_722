@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RegisterService {
@@ -63,7 +64,7 @@ public class RegisterService {
     public void filterTributesByDistrictAndStatus(int district) {
         System.out.println("Tribute aus Distrikt " + district + " mit Status ALIVE:");
         for (Register r : registers) {
-            if (r.getDistrict() == district && r.getStatus().toString().equals("ALIVE")) {
+            if (r.getDistrict() == district && r.getStatus() == org.example.practic_hudea_lucian_722.Status.ALIVE) {
                 System.out.println(r.getId() + " | " + r.getName() + " | " + "D" + r.getDistrict() + " | " + r.getStatus() + " | " + r.getSkillLevel());
             }
         }
@@ -93,6 +94,58 @@ public class RegisterService {
             for (Register r : registers) {
                 writer.println(r.getId() + " | " + r.getName() + " | " + "D" + r.getDistrict() + " | " + r.getStatus() + " | " + r.getSkillLevel());
             }
+        }
+    }
+
+    //5) Punktberechnung
+    //Das Kapitol definiert feste Regeln zur Berechnung der Punkte für jedes Ereignis. Implementieren Sie für alle folgenden EventTyp-Werte je eine Regel:
+    //● FOUND_SUPPLIES → computedPoints = points + 2 * day
+    //● INJURED → computedPoints = points - day
+    //● ATTACK → computedPoints = points * 2 + day
+    //● HELPED_ALLY → computedPoints = points + 5
+    //● SPONSORED → computedPoints = points + 10
+    //Berechnen Sie für die ersten 5 Ereignisse aus events.json die computedPoints und geben Sie pro Ereignis eine Zeile aus:
+    //Ausgabeformat:
+    //Event <id> -> rawPoints=<points> -> computedPoints=<computedPoints>
+    //Ausgabe:
+    //Event 1 -> rawPoints=10 -> computedPoints=12
+    //Event 2 -> rawPoints=-5 -> computedPoints=-7
+    //Event 3 -> rawPoints=15 -> computedPoints=31
+    //Event 4 -> rawPoints=8 -> computedPoints=13
+    //Event 5 -> rawPoints=12 -> computedPoints=14
+
+    public void calculateEventPoints() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Map<String, Object>> events = mapper.readValue(new File("events.json"), new TypeReference<List<Map<String, Object>>>() {
+        });
+
+        for (int i = 0; i < Math.min(5, events.size()); i++) {
+            Map<String, Object> event = events.get(i);
+            int id = (int) event.get("id");
+            int points = (int) event.get("points");
+            int day = (int) event.get("day");
+            String eventType = (String) event.get("eventType");
+
+            int computedPoints = 0;
+            switch (eventType) {
+                case "FOUND_SUPPLIES":
+                    computedPoints = points + 2 * day;
+                    break;
+                case "INJURED":
+                    computedPoints = points - day;
+                    break;
+                case "ATTACK":
+                    computedPoints = points * 2 + day;
+                    break;
+                case "HELPED_ALLY":
+                    computedPoints = points + 5;
+                    break;
+                case "SPONSORED":
+                    computedPoints = points + 10;
+                    break;
+            }
+
+            System.out.println("Event " + id + " -> rawPoints=" + points + " -> computedPoints=" + computedPoints);
         }
     }
 }
