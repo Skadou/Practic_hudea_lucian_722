@@ -20,25 +20,28 @@ public class RegisterService {
     //Anzahl der Tribute
     public void loadTributes(String filepath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        this.registers = mapper.readValue(new File(filepath) , new TypeReference<List<Register>>(){});
+        this.registers = mapper.readValue(new File(filepath), new TypeReference<List<Register>>() {
+        });
 
         System.out.println("Anzahl der Tribute: " + registers.size());
-        for(Register r : registers)
-            System.out.println(r.getId() + " | " + r.getName() + " | " + "D"+r.getDistrict() + " | " + r.getStatus() + " | " + r.getSkillLevel());
+        for (Register r : registers)
+            System.out.println(r.getId() + " | " + r.getName() + " | " + "D" + r.getDistrict() + " | " + r.getStatus() + " | " + r.getSkillLevel());
     }
 
     //Anzahl der Ereignisse
-     public void numberofEvents() throws IOException {
-         ObjectMapper mapper = new ObjectMapper();
-         List<Object> events = mapper.readValue(new File("events.json") , new TypeReference<List<Object>>(){});
+    public void numberofEvents() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Object> events = mapper.readValue(new File("events.json"), new TypeReference<List<Object>>() {
+        });
 
-         System.out.println("Anzahl der Ereignisse: " + events.size());
-     }
+        System.out.println("Anzahl der Ereignisse: " + events.size());
+    }
 
     //Anzahl der Sponsorengeschenke
-    public void numberofGifts() throws IOException{
+    public void numberofGifts() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        List<Object> gifts = mapper.readValue(new File("gifts.json") , new TypeReference<List<Object>>(){});
+        List<Object> gifts = mapper.readValue(new File("gifts.json"), new TypeReference<List<Object>>() {
+        });
 
         System.out.println("Anzahl der Sponsorengeschenke: " + gifts.size());
     }
@@ -46,7 +49,8 @@ public class RegisterService {
     //alle Tribute (jeweils eine Zeile)
     public void numberofTributes() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        List<Register> tributes = mapper.readValue(new File("tributes.json"), new TypeReference<List<Register>>(){});
+        List<Register> tributes = mapper.readValue(new File("tributes.json"), new TypeReference<List<Register>>() {
+        });
 
         System.out.println("Anzahl der Tribute: " + tributes.size());
     }
@@ -80,6 +84,15 @@ public class RegisterService {
         System.out.println("Sortierte Liste der Tribute:");
         for (Register r : registers) {
             System.out.println(r.getId() + " | " + r.getName() + " | " + "D" + r.getDistrict() + " | " + r.getStatus() + " | " + r.getSkillLevel());
+        }
+    }
+
+    //4)Schreiben in eine Datei Schreiben Sie die in Aufgabe 3 sortierte Liste der Tribute in die Datei tributes_sorted.txt. Jeder Tribut soll in einer eigenen Zeile gespeichert werden, im selben Format wie bei der Konsolenausgabe.
+    public void writeSortedTributesToFile() throws IOException {
+        try (var writer = new java.io.PrintWriter(new File("tributes_sorted.txt"))) {
+            for (Register r : registers) {
+                writer.println(r.getId() + " | " + r.getName() + " | " + "D" + r.getDistrict() + " | " + r.getStatus() + " | " + r.getSkillLevel());
+            }
         }
     }
 }

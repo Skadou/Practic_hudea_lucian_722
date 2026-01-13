@@ -24,6 +24,9 @@ public class RegisterController {
 
             // d) numar tributi
             service.numberofTributes();
+
+
+
         } catch (Exception e) {
             System.err.println("Eroare la procesarea datelor: " + e.getMessage());
         }
